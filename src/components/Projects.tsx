@@ -1,54 +1,85 @@
-import { motion } from 'framer-motion'
+import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion'
+import { useEffect, useState } from 'react'
+import { ExternalLink, Github, ArrowRight } from 'lucide-react'
 
 const projects = [
   {
     title: '电商平台',
-    description: '一个现代化的全栈电商解决方案，具有流畅的购物体验和强大的管理后台。',
+    description: '一个现代化的全栈电商解决方案，具有流畅的购物体验和强大的管理后台。功能包括商品浏览、购物车、支付集成和订单管理。',
     tags: ['React', 'Next.js', 'Tailwind'],
-    color: '#FF6B6B'
+    color: '#FF6B6B',
+    emoji: '🛒'
   },
   {
     title: '数据可视化',
-    description: '交互式数据仪表板，将复杂数据转化为直观的图表和分析报告。',
+    description: '交互式数据仪表板，将复杂数据转化为直观的图表和分析报告。支持实时数据更新、自定义图表和导出功能。',
     tags: ['D3.js', 'React', 'TypeScript'],
-    color: '#4ECDC4'
+    color: '#4ECDC4',
+    emoji: '📊'
   },
   {
     title: '社交应用',
-    description: '实时聊天和社交网络应用，支持多媒体分享和用户互动。',
+    description: '实时聊天和社交网络应用，支持多媒体分享和用户互动。包括私信、群组聊天、动态发布和通知系统。',
     tags: ['React', 'Socket.io', 'MongoDB'],
-    color: '#FF6B6B'
+    color: '#FFD93D',
+    emoji: '💬'
   },
   {
     title: 'AI 助手',
-    description: '智能对话系统，集成最新的 AI 模型，提供自然流畅的交互体验。',
+    description: '智能对话系统，集成最新的 AI 模型，提供自然流畅的交互体验。支持多轮对话、上下文理解和智能建议。',
     tags: ['React', 'OpenAI', 'Node.js'],
-    color: '#4ECDC4'
+    color: '#95E1D3',
+    emoji: '🤖'
   }
 ]
 
 export default function Projects() {
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null)
+  const x = useMotionValue(0)
+  const y = useMotionValue(0)
+
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      x.set(e.clientX - window.innerWidth / 2)
+      y.set(e.clientY - window.innerHeight / 2)
+    }
+    window.addEventListener('mousemove', handleMouseMove)
+    return () => window.removeEventListener('mousemove', handleMouseMove)
+  }, [x, y])
+
+  const mouseXSpring = useSpring(x, { stiffness: 400, damping: 30 })
+  const mouseYSpring = useSpring(y, { stiffness: 400, damping: 30 })
+
   return (
     <section id="projects" className="min-h-screen py-32 relative">
-      <div className="max-w-7xl mx-auto px-6">
+      <div className="absolute inset-0 overflow-hidden">
+        <motion.div 
+          className="absolute top-1/2 left-1/4 w-[600px] h-[600px] bg-gradient-to-br from-primary/5 to-transparent rounded-full blur-3xl"
+          style={{ 
+            x: useTransform(mouseXSpring, [-200, 200], [-40, 40]),
+            y: useTransform(mouseYSpring, [-200, 200], [-40, 40]),
+          }}
+        />
+      </div>
+
+      <div className="max-w-7xl mx-auto px-6 relative z-10">
         <div className="text-center mb-20">
           <motion.span
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="font-body text-primary text-sm uppercase tracking-widest mb-4 block"
+            className="font-body text-primary text-xs uppercase tracking-[0.5em] mb-4 block"
           >
-            作品
+            — 作品
           </motion.span>
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.1 }}
-            className="font-display text-5xl md:text-6xl font-bold"
+            className="font-display text-5xl md:text-6xl font-black"
           >
-            精选
-            <span className="text-primary">项目</span>
+            精选<span className="text-primary">项目</span>
           </motion.h2>
         </div>
 
@@ -56,50 +87,109 @@ export default function Projects() {
           {projects.map((project, index) => (
             <motion.div
               key={index}
-              initial={{ opacity: 0, y: 50 }}
-              whileInView={{ opacity: 1, y: 0 }}
+              initial={{ opacity: 0, y: 60, scale: 0.9 }}
+              whileInView={{ opacity: 1, y: 0, scale: 1 }}
               viewport={{ once: true }}
-              transition={{ delay: index * 0.1 }}
-              whileHover={{ y: -10 }}
-              className="group relative bg-white/5 border border-white/10 rounded-sm overflow-hidden"
+              transition={{ delay: index * 0.15, duration: 0.6 }}
+              whileHover={{ y: -12, scale: 1.02 }}
+              onHoverStart={() => setHoveredIndex(index)}
+              onHoverEnd={() => setHoveredIndex(null)}
+              className="group relative glass rounded-3xl overflow-hidden border border-white/10"
             >
               <div 
                 className="aspect-video relative overflow-hidden"
-                style={{ backgroundColor: `${project.color}20` }}
+                style={{ backgroundColor: `${project.color}10` }}
               >
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="text-6xl opacity-20 group-hover:scale-110 transition-transform duration-500">
-                    🎨
+                <motion.div
+                  animate={{ 
+                    rotate: [0, 5, -5, 0],
+                    scale: [1, 1.05, 1]
+                  }}
+                  transition={{ 
+                    duration: 6, 
+                    delay: index * 0.5,
+                    repeat: Infinity,
+                    ease: 'easeInOut'
+                  }}
+                  className="absolute inset-0 flex items-center justify-center"
+                >
+                  <div className="text-8xl opacity-40 group-hover:opacity-60 transition-opacity">
+                    {project.emoji}
                   </div>
-                </div>
-                <div className="absolute inset-0 bg-dark/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                </motion.div>
+                
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: hoveredIndex === index ? 1 : 0, y: hoveredIndex === index ? 0 : 20 }}
+                  transition={{ duration: 0.3 }}
+                  className="absolute inset-0 bg-dark/80 backdrop-blur-sm flex items-center justify-center gap-4"
+                >
                   <motion.button
-                    whileHover={{ scale: 1.05 }}
+                    whileHover={{ scale: 1.1, backgroundColor: project.color }}
                     whileTap={{ scale: 0.95 }}
-                    className="px-6 py-3 bg-primary text-dark font-body font-bold uppercase tracking-wider rounded-sm"
+                    className="w-14 h-14 glass rounded-full flex items-center justify-center border border-white/20 hover:border-transparent"
                   >
-                    查看详情
+                    <ExternalLink size={24} className="text-light" />
                   </motion.button>
+                  <motion.button
+                    whileHover={{ scale: 1.1, backgroundColor: project.color }}
+                    whileTap={{ scale: 0.95 }}
+                    className="w-14 h-14 glass rounded-full flex items-center justify-center border border-white/20 hover:border-transparent"
+                  >
+                    <Github size={24} className="text-light" />
+                  </motion.button>
+                </motion.div>
+
+                <div className="absolute top-4 right-4">
+                  <motion.div
+                    animate={{ rotate: 360 }}
+                    transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}
+                    className="w-8 h-8 rounded-full"
+                    style={{ backgroundColor: project.color }}
+                  />
                 </div>
               </div>
+
               <div className="p-8">
-                <h3 className="font-display text-2xl font-bold mb-3 group-hover:text-primary transition-colors">
+                <motion.h3 
+                  className="font-display text-2xl font-black mb-3 group-hover:text-primary transition-colors"
+                  animate={{ x: hoveredIndex === index ? 5 : 0 }}
+                >
                   {project.title}
-                </h3>
-                <p className="font-body text-light/60 mb-6">
+                </motion.h3>
+                <p className="font-body text-light/50 mb-6 leading-relaxed">
                   {project.description}
                 </p>
-                <div className="flex flex-wrap gap-2">
+                <div className="flex flex-wrap gap-2 mb-6">
                   {project.tags.map((tag, tagIndex) => (
-                    <span
+                    <motion.span
                       key={tagIndex}
-                      className="px-3 py-1 bg-white/10 rounded-sm font-body text-sm text-light/70"
+                      initial={{ opacity: 0, scale: 0.8 }}
+                      whileInView={{ opacity: 1, scale: 1 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: index * 0.15 + tagIndex * 0.05 }}
+                      whileHover={{ scale: 1.1, y: -2 }}
+                      className="px-4 py-2 glass rounded-full text-xs font-body text-light/70 border border-white/10"
                     >
                       {tag}
-                    </span>
+                    </motion.span>
                   ))}
                 </div>
+                <motion.button
+                  whileHover={{ x: 5 }}
+                  className="flex items-center gap-2 font-body text-primary font-bold uppercase tracking-widest text-sm"
+                >
+                  查看项目 <ArrowRight size={16} />
+                </motion.button>
               </div>
+
+              <motion.div
+                className="absolute bottom-0 left-0 h-1"
+                initial={{ width: '0%' }}
+                whileHover={{ width: '100%' }}
+                transition={{ duration: 0.4 }}
+                style={{ backgroundColor: project.color }}
+              />
             </motion.div>
           ))}
         </div>

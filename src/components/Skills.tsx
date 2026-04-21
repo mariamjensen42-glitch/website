@@ -1,12 +1,24 @@
 import { motion } from 'framer-motion'
+import { Code2, Layout, Database, Zap, Palette, Layers, Globe, Terminal } from 'lucide-react'
 
 const skills = [
-  { name: 'React', level: 95 },
-  { name: 'TypeScript', level: 90 },
-  { name: 'Tailwind', level: 92 },
-  { name: 'Node.js', level: 85 },
-  { name: 'Next.js', level: 88 },
-  { name: 'Framer Motion', level: 87 },
+  { name: 'React', level: 95, icon: Code2, color: '#61DAFB' },
+  { name: 'TypeScript', level: 90, icon: Terminal, color: '#3178C6' },
+  { name: 'Tailwind', level: 92, icon: Palette, color: '#06B6D4' },
+  { name: 'Node.js', level: 85, icon: Database, color: '#339933' },
+  { name: 'Next.js', level: 88, icon: Layers, color: '#000000' },
+  { name: 'Framer Motion', level: 87, icon: Zap, color: '#0055FF' },
+]
+
+const techStack = [
+  { name: 'JavaScript', icon: Code2 },
+  { name: 'CSS3', icon: Palette },
+  { name: 'HTML5', icon: Layout },
+  { name: 'Git', icon: Terminal },
+  { name: 'Docker', icon: Database },
+  { name: 'AWS', icon: Globe },
+  { name: 'GraphQL', icon: Layers },
+  { name: 'Three.js', icon: Zap },
 ]
 
 export default function Skills() {
@@ -18,68 +30,121 @@ export default function Skills() {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="font-body text-primary text-sm uppercase tracking-widest mb-4 block"
+            className="font-body text-primary text-xs uppercase tracking-[0.5em] mb-4 block"
           >
-            技能
+            — 技能
           </motion.span>
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.1 }}
-            className="font-display text-5xl md:text-6xl font-bold"
+            className="font-display text-5xl md:text-6xl font-black"
           >
-            我的
-            <span className="text-primary">工具箱</span>
+            我的<span className="text-primary">工具箱</span>
           </motion.h2>
         </div>
 
-        <div className="max-w-3xl mx-auto space-y-8">
-          {skills.map((skill, index) => (
-            <motion.div
-              key={skill.name}
-              initial={{ opacity: 0, x: -50 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: index * 0.1 }}
-            >
-              <div className="flex justify-between items-center mb-3">
-                <span className="font-body text-light text-lg">
-                  {skill.name}
-                </span>
-                <span className="font-body text-primary text-lg">
-                  {skill.level}%
-                </span>
-              </div>
-              <div className="h-2 bg-white/10 rounded-full overflow-hidden">
-                <motion.div
-                  initial={{ width: 0 }}
-                  whileInView={{ width: `${skill.level}%` }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 1, delay: index * 0.1 }}
-                  className="h-full bg-gradient-to-r from-primary to-secondary rounded-full"
-                />
-              </div>
-            </motion.div>
-          ))}
+        <div className="grid md:grid-cols-2 gap-8 mb-20">
+          {skills.map((skill, index) => {
+            const Icon = skill.icon
+            return (
+              <motion.div
+                key={skill.name}
+                initial={{ opacity: 0, x: index % 2 === 0 ? -50 : 50 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.1 }}
+                whileHover={{ scale: 1.02, y: -5 }}
+                className="glass rounded-2xl p-8 border border-white/5"
+              >
+                <div className="flex items-center gap-4 mb-4">
+                  <div 
+                    className="w-12 h-12 rounded-xl flex items-center justify-center"
+                    style={{ backgroundColor: `${skill.color}20` }}
+                  >
+                    <Icon size={24} style={{ color: skill.color }} />
+                  </div>
+                  <div>
+                    <h3 className="font-display text-xl font-bold text-light">
+                      {skill.name}
+                    </h3>
+                    <p className="font-body text-light/40 text-sm">
+                      熟练程度
+                    </p>
+                  </div>
+                  <span className="ml-auto font-display text-2xl font-bold text-primary">
+                    {skill.level}%
+                  </span>
+                </div>
+                <div className="h-3 bg-white/5 rounded-full overflow-hidden">
+                  <motion.div
+                    initial={{ width: 0 }}
+                    whileInView={{ width: `${skill.level}%` }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 1.5, delay: index * 0.1 + 0.3, ease: 'easeOut' }}
+                    className="h-full rounded-full"
+                    style={{ 
+                      background: `linear-gradient(90deg, ${skill.color}, ${skill.color}80)` 
+                    }}
+                  />
+                </div>
+              </motion.div>
+            )
+          })}
         </div>
 
-        <div className="mt-20 grid grid-cols-2 md:grid-cols-4 gap-6">
-          {['JavaScript', 'CSS3', 'HTML5', 'Git', 'Docker', 'AWS', 'GraphQL', 'Three.js'].map((tech, index) => (
-            <motion.div
-              key={tech}
-              initial={{ opacity: 0, scale: 0.8 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ delay: index * 0.05 }}
-              whileHover={{ scale: 1.05, rotate: 1 }}
-              className="bg-white/5 border border-white/10 rounded-sm p-6 text-center hover:border-primary/50 transition-colors"
-            >
-              <span className="font-body text-light text-lg">
-                {tech}
-              </span>
-            </motion.div>
-          ))}
+        <div className="text-center mb-12">
+          <motion.h3
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="font-display text-2xl font-bold text-light mb-2"
+          >
+            技术栈
+          </motion.h3>
+          <p className="font-body text-light/50">我常用的技术和工具</p>
+        </div>
+
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+          {techStack.map((tech, i) => {
+            const Icon = tech.icon
+            return (
+              <motion.div
+                key={tech.name}
+                initial={{ opacity: 0, scale: 0.8, y: 30 }}
+                whileInView={{ opacity: 1, scale: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.08 }}
+                whileHover={{ 
+                  scale: 1.1, 
+                  rotate: 3, 
+                  y: -10,
+                  borderColor: 'rgba(255, 107, 107, 0.5)',
+                }}
+                whileTap={{ scale: 0.95 }}
+                className="glass rounded-2xl p-8 border border-white/5 text-center cursor-pointer"
+              >
+                <motion.div
+                  animate={{ 
+                    rotate: [0, 5, -5, 0],
+                  }}
+                  transition={{ 
+                    duration: 4, 
+                    delay: i * 0.2,
+                    repeat: Infinity,
+                    ease: 'easeInOut'
+                  }}
+                  className="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-primary/20 to-secondary/20 rounded-xl flex items-center justify-center"
+                >
+                  <Icon size={32} className="text-primary" />
+                </motion.div>
+                <span className="font-display text-lg font-bold text-light">
+                  {tech.name}
+                </span>
+              </motion.div>
+            )
+          })}
         </div>
       </div>
     </section>
