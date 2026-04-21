@@ -1,32 +1,7 @@
-import { motion, useScroll, useTransform, useMotionValue, useSpring } from 'framer-motion'
-import { useEffect } from 'react'
+import { motion } from 'framer-motion'
 import { Sparkles, Code2, Palette, Zap, Coffee, Heart } from 'lucide-react'
 
 export default function About() {
-  const { scrollYProgress } = useScroll({
-    target: document.getElementById('about'),
-    offset: ["start end", "end start"]
-  })
-
-  const x = useMotionValue(0)
-  const y = useMotionValue(0)
-
-  useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      x.set(e.clientX - window.innerWidth / 2)
-      y.set(e.clientY - window.innerHeight / 2)
-    }
-    window.addEventListener('mousemove', handleMouseMove)
-    return () => window.removeEventListener('mousemove', handleMouseMove)
-  }, [x, y])
-
-  const mouseXSpring = useSpring(x, { stiffness: 300, damping: 30 })
-  const mouseYSpring = useSpring(y, { stiffness: 300, damping: 30 })
-
-  const opacity = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0, 1, 1, 0])
-  const translateX = useTransform(scrollYProgress, [0, 0.2], [-100, 0])
-  const translateX2 = useTransform(scrollYProgress, [0, 0.2], [100, 0])
-
   const features = [
     { icon: Sparkles, title: '创意设计', desc: '追求独特的视觉风格' },
     { icon: Code2, title: '优质代码', desc: '整洁、可维护、高性能' },
@@ -36,33 +11,12 @@ export default function About() {
 
   return (
     <section id="about" className="min-h-screen py-32 relative">
-      <div className="absolute inset-0 overflow-hidden">
-        <motion.div 
-          className="absolute top-0 right-0 w-[600px] h-[600px] bg-gradient-to-br from-secondary/5 to-transparent rounded-full blur-3xl"
-          style={{ 
-            x: useTransform(mouseXSpring, [-200, 200], [-30, 30]),
-            y: useTransform(mouseYSpring, [-200, 200], [-30, 30]),
-          }}
-        />
-        <motion.div 
-          className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-gradient-to-tr from-primary/5 to-transparent rounded-full blur-3xl"
-          style={{ 
-            x: useTransform(mouseXSpring, [-200, 200], [30, -30]),
-            y: useTransform(mouseYSpring, [-200, 200], [30, -30]),
-          }}
-        />
-      </div>
-
       <div className="max-w-7xl mx-auto px-6 relative z-10">
         <div className="grid md:grid-cols-2 gap-16 items-center">
-          <motion.div style={{ opacity, x: translateX }} className="relative">
+          <motion.div className="relative">
             <motion.div 
               className="aspect-square glass rounded-2xl overflow-hidden relative"
               whileHover={{ scale: 1.02 }}
-              style={{ 
-                x: useTransform(mouseXSpring, [-200, 200], [-10, 10]),
-                y: useTransform(mouseYSpring, [-200, 200], [-10, 10]),
-              }}
             >
               <div className="absolute inset-0 bg-gradient-to-br from-primary/20 via-transparent to-secondary/20" />
               <div className="absolute inset-0 flex items-center justify-center">
@@ -88,8 +42,6 @@ export default function About() {
                     key={i}
                     className="border border-white/5 rounded-lg"
                     whileHover={{ backgroundColor: 'rgba(255,255,255,0.05)' }}
-                    animate={{ opacity: [0.3, 0.5, 0.3] }}
-                    transition={{ delay: i * 0.1, duration: 3, repeat: Infinity }}
                   />
                 ))}
               </div>
@@ -111,7 +63,7 @@ export default function About() {
             </motion.div>
           </motion.div>
 
-          <motion.div style={{ opacity, x: translateX2 }}>
+          <motion.div>
             <motion.span
               initial={{ opacity: 0, x: -20 }}
               whileInView={{ opacity: 1, x: 0 }}
@@ -187,13 +139,9 @@ export default function About() {
                   transition={{ delay: 0.5 + index * 0.1 }}
                   className="text-center"
                 >
-                  <motion.div
-                    animate={{ scale: [1, 1.1, 1] }}
-                    transition={{ duration: 2, delay: index * 0.2, repeat: Infinity }}
-                    className="font-display text-5xl font-black bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent mb-2"
-                  >
+                  <div className="font-display text-5xl font-black bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent mb-2">
                     {stat.number}
-                  </motion.div>
+                  </div>
                   <p className="font-body text-light/40 text-xs uppercase tracking-widest">
                     {stat.label}
                   </p>

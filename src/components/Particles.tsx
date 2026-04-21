@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion'
 
 export default function Particles() {
-  const particles = Array.from({ length: 50 })
+  const particles = Array.from({ length: 15 })
 
   return (
     <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">

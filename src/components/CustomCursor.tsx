@@ -1,11 +1,9 @@
-import { motion, useMotionValue, useSpring } from 'framer-motion'
+import { motion, useMotionValue } from 'framer-motion'
 import { useEffect } from 'react'
 
 export default function CustomCursor() {
   const cursorX = useMotionValue(-100)
   const cursorY = useMotionValue(-100)
-  const cursorXSpring = useSpring(cursorX, { stiffness: 500, damping: 28 })
-  const cursorYSpring = useSpring(cursorY, { stiffness: 500, damping: 28 })
 
   useEffect(() => {
     const moveCursor = (e: MouseEvent) => {
@@ -22,8 +20,8 @@ export default function CustomCursor() {
       <motion.div
         className="fixed top-0 left-0 w-8 h-8 rounded-full border-2 border-primary pointer-events-none z-[9998] mix-blend-difference"
         style={{
-          x: cursorXSpring,
-          y: cursorYSpring,
+          x: cursorX,
+          y: cursorY,
           translateX: '-50%',
           translateY: '-50%',
         }}

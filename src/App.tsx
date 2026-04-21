@@ -78,16 +78,9 @@ function App() {
                     animate={{ 
                       opacity: 1, 
                       y: 0,
-                      backgroundColor: activeSection === index ? 'rgba(255, 107, 107, 0.2)' : 'transparent',
-                      borderColor: activeSection === index ? '#FF6B6B' : 'rgba(255,255,255,0.1)',
                     }}
-                    transition={{ delay: index * 0.1, type: 'spring' }}
+                    transition={{ delay: index * 0.1 }}
                     onClick={() => scrollToSection(section.id)}
-                    whileHover={{ 
-                      scale: 1.1, 
-                      backgroundColor: 'rgba(255, 107, 107, 0.15)' 
-                    }}
-                    whileTap={{ scale: 0.95 }}
                     className="flex items-center gap-2 px-5 py-3 rounded-full border transition-all"
                   >
                     <Icon size={16} className={activeSection === index ? 'text-primary' : 'text-light/60'} />
@@ -120,14 +113,8 @@ function App() {
               key={index}
               onClick={() => scrollToSection(section.id)}
               initial={{ opacity: 0, x: 20 }}
-              animate={{ 
-                opacity: 1, 
-                x: 0,
-                scale: activeSection === index ? 1.3 : 1,
-              }}
+              animate={{ opacity: 1, x: 0 }}
               transition={{ delay: index * 0.1 }}
-              whileHover={{ scale: 1.4, x: -5 }}
-              whileTap={{ scale: 0.9 }}
               className="relative group"
             >
               <div className={`w-10 h-10 rounded-full flex items-center justify-center transition-all ${

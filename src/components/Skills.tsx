@@ -125,20 +125,9 @@ export default function Skills() {
                 whileTap={{ scale: 0.95 }}
                 className="glass rounded-2xl p-8 border border-white/5 text-center cursor-pointer"
               >
-                <motion.div
-                  animate={{ 
-                    rotate: [0, 5, -5, 0],
-                  }}
-                  transition={{ 
-                    duration: 4, 
-                    delay: i * 0.2,
-                    repeat: Infinity,
-                    ease: 'easeInOut'
-                  }}
-                  className="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-primary/20 to-secondary/20 rounded-xl flex items-center justify-center"
-                >
+                <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-primary/20 to-secondary/20 rounded-xl flex items-center justify-center">
                   <Icon size={32} className="text-primary" />
-                </motion.div>
+                </div>
                 <span className="font-display text-lg font-bold text-light">
                   {tech.name}
                 </span>
