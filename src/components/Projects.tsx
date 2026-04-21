@@ -1,6 +1,6 @@
-import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion'
-import { useEffect, useState } from 'react'
-import { ExternalLink, Github, ArrowRight } from 'lucide-react'
+import { motion } from 'framer-motion'
+import { useState } from 'react'
+import { ExternalLink, Link, ArrowRight } from 'lucide-react'
 
 const projects = [
   {
@@ -35,32 +35,9 @@ const projects = [
 
 export default function Projects() {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null)
-  const x = useMotionValue(0)
-  const y = useMotionValue(0)
-
-  useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      x.set(e.clientX - window.innerWidth / 2)
-      y.set(e.clientY - window.innerHeight / 2)
-    }
-    window.addEventListener('mousemove', handleMouseMove)
-    return () => window.removeEventListener('mousemove', handleMouseMove)
-  }, [x, y])
-
-  const mouseXSpring = useSpring(x, { stiffness: 400, damping: 30 })
-  const mouseYSpring = useSpring(y, { stiffness: 400, damping: 30 })
 
   return (
     <section id="projects" className="min-h-screen py-32 relative">
-      <div className="absolute inset-0 overflow-hidden">
-        <motion.div 
-          className="absolute top-1/2 left-1/4 w-[600px] h-[600px] bg-gradient-to-br from-primary/5 to-transparent rounded-full blur-3xl"
-          style={{ 
-            x: useTransform(mouseXSpring, [-200, 200], [-40, 40]),
-            y: useTransform(mouseYSpring, [-200, 200], [-40, 40]),
-          }}
-        />
-      </div>
 
       <div className="max-w-7xl mx-auto px-6 relative z-10">
         <div className="text-center mb-20">
@@ -100,23 +77,11 @@ export default function Projects() {
                 className="aspect-video relative overflow-hidden"
                 style={{ backgroundColor: `${project.color}10` }}
               >
-                <motion.div
-                  animate={{ 
-                    rotate: [0, 5, -5, 0],
-                    scale: [1, 1.05, 1]
-                  }}
-                  transition={{ 
-                    duration: 6, 
-                    delay: index * 0.5,
-                    repeat: Infinity,
-                    ease: 'easeInOut'
-                  }}
-                  className="absolute inset-0 flex items-center justify-center"
-                >
+                <div className="absolute inset-0 flex items-center justify-center">
                   <div className="text-8xl opacity-40 group-hover:opacity-60 transition-opacity">
                     {project.emoji}
                   </div>
-                </motion.div>
+                </div>
                 
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
@@ -136,14 +101,12 @@ export default function Projects() {
                     whileTap={{ scale: 0.95 }}
                     className="w-14 h-14 glass rounded-full flex items-center justify-center border border-white/20 hover:border-transparent"
                   >
-                    <Github size={24} className="text-light" />
+                    <Link size={24} className="text-light" />
                   </motion.button>
                 </motion.div>
 
                 <div className="absolute top-4 right-4">
-                  <motion.div
-                    animate={{ rotate: 360 }}
-                    transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}
+                  <div 
                     className="w-8 h-8 rounded-full"
                     style={{ backgroundColor: project.color }}
                   />
@@ -162,17 +125,12 @@ export default function Projects() {
                 </p>
                 <div className="flex flex-wrap gap-2 mb-6">
                   {project.tags.map((tag, tagIndex) => (
-                    <motion.span
+                    <span
                       key={tagIndex}
-                      initial={{ opacity: 0, scale: 0.8 }}
-                      whileInView={{ opacity: 1, scale: 1 }}
-                      viewport={{ once: true }}
-                      transition={{ delay: index * 0.15 + tagIndex * 0.05 }}
-                      whileHover={{ scale: 1.1, y: -2 }}
                       className="px-4 py-2 glass rounded-full text-xs font-body text-light/70 border border-white/10"
                     >
                       {tag}
-                    </motion.span>
+                    </span>
                   ))}
                 </div>
                 <motion.button

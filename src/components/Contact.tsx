@@ -1,25 +1,11 @@
-import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion'
-import { useEffect, useState } from 'react'
-import { Mail, Phone, MapPin, Send, Github, Linkedin, Twitter, Instagram } from 'lucide-react'
+import { motion } from 'framer-motion'
+import { useState } from 'react'
+import { Mail, Phone, MapPin, Send, Link, Linkedin, Twitter, Instagram } from 'lucide-react'
 
 export default function Contact() {
   const [formData, setFormData] = useState({ name: '', email: '', message: '' })
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitSuccess, setSubmitSuccess] = useState(false)
-  const x = useMotionValue(0)
-  const y = useMotionValue(0)
-
-  useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      x.set(e.clientX - window.innerWidth / 2)
-      y.set(e.clientY - window.innerHeight / 2)
-    }
-    window.addEventListener('mousemove', handleMouseMove)
-    return () => window.removeEventListener('mousemove', handleMouseMove)
-  }, [x, y])
-
-  const mouseXSpring = useSpring(x, { stiffness: 300, damping: 30 })
-  const mouseYSpring = useSpring(y, { stiffness: 300, damping: 30 })
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
@@ -43,7 +29,7 @@ export default function Contact() {
   ]
 
   const socialLinks = [
-    { icon: Github, name: 'GitHub' },
+    { icon: Link, name: 'GitHub' },
     { icon: Linkedin, name: 'LinkedIn' },
     { icon: Twitter, name: 'Twitter' },
     { icon: Instagram, name: 'Instagram' },
@@ -51,23 +37,6 @@ export default function Contact() {
 
   return (
     <section id="contact" className="min-h-screen py-32 relative">
-      <div className="absolute inset-0 overflow-hidden">
-        <motion.div 
-          className="absolute top-1/3 right-1/3 w-[800px] h-[800px] bg-gradient-to-br from-secondary/5 to-transparent rounded-full blur-3xl"
-          style={{ 
-            x: useTransform(mouseXSpring, [-200, 200], [-50, 50]),
-            y: useTransform(mouseYSpring, [-200, 200], [-50, 50]),
-          }}
-        />
-        <motion.div 
-          className="absolute bottom-1/3 left-1/3 w-[600px] h-[600px] bg-gradient-to-tr from-primary/5 to-transparent rounded-full blur-3xl"
-          style={{ 
-            x: useTransform(mouseXSpring, [-200, 200], [50, -50]),
-            y: useTransform(mouseYSpring, [-200, 200], [50, -50]),
-          }}
-        />
-      </div>
-
       <div className="max-w-7xl mx-auto px-6 relative z-10">
         <div className="text-center mb-20">
           <motion.span

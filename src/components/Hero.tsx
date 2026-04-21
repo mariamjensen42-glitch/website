@@ -1,67 +1,13 @@
-import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion'
-import { useEffect, useState } from 'react'
-import { ArrowDown, Github, Linkedin, Twitter } from 'lucide-react'
+import { motion } from 'framer-motion'
+import { ArrowDown, Link, Linkedin, Twitter } from 'lucide-react'
 
 export default function Hero() {
-  const x = useMotionValue(0)
-  const y = useMotionValue(0)
-  const mouseXSpring = useSpring(x, { stiffness: 500, damping: 30 })
-  const mouseYSpring = useSpring(y, { stiffness: 500, damping: 30 })
-
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
-
-  useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      x.set(e.clientX - window.innerWidth / 2)
-      y.set(e.clientY - window.innerHeight / 2)
-      setMousePosition({ x: e.clientX, y: e.clientY })
-    }
-    window.addEventListener('mousemove', handleMouseMove)
-    return () => window.removeEventListener('mousemove', handleMouseMove)
-  }, [x, y])
-
-  const ringScale = useTransform(mouseXSpring, [-400, 400], [0.8, 1.2])
-
   return (
     <section id="hero" className="min-h-screen flex items-center justify-center relative overflow-hidden pt-24">
-      <div className="absolute inset-0">
-        <motion.div 
-          className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/10 rounded-full blur-3xl"
-          style={{ 
-            x: useTransform(mouseXSpring, [-200, 200], [50, -50]),
-            y: useTransform(mouseYSpring, [-200, 200], [50, -50]),
-          }}
-        />
-        <motion.div 
-          className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-secondary/10 rounded-full blur-3xl"
-          style={{ 
-            x: useTransform(mouseXSpring, [-200, 200], [-50, 50]),
-            y: useTransform(mouseYSpring, [-200, 200], [-50, 50]),
-          }}
-        />
-      </div>
 
-      <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-        <motion.div 
-          className="absolute w-[800px] h-[800px] border border-primary/20 rounded-full"
-          style={{ 
-            scale: ringScale,
-            x: useTransform(mouseXSpring, [-200, 200], [-30, 30]),
-            y: useTransform(mouseYSpring, [-200, 200], [-30, 30]),
-          }}
-        />
-        <motion.div 
-          className="absolute w-[600px] h-[600px] border border-secondary/15 rounded-full"
-          style={{ 
-            scale: useTransform(ringScale, [0.8, 1.2], [1.2, 0.8]),
-            x: useTransform(mouseXSpring, [-200, 200], [30, -30]),
-            y: useTransform(mouseYSpring, [-200, 200], [30, -30]),
-          }}
-        />
-      </div>
 
       <div className="absolute left-10 top-0 bottom-0 flex flex-col justify-center gap-8 hidden md:flex">
-        {[Github, Twitter, Linkedin].map((Icon, i) => (
+        {[Link, Twitter, Linkedin].map((Icon, i) => (
           <motion.a
             key={i}
             href="#"
